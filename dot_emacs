@@ -1,0 +1,151 @@
+ (custom-set-variables
+ ;; custom-set-variables was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ '(case-fold-search t)
+ '(cua-mode t nil (cua-base))
+ '(current-language-environment "Latin-1")
+ '(default-input-method "latin-1-prefix")
+ '(global-font-lock-mode t nil (font-lock))
+ '(save-place t nil (saveplace))
+ '(show-paren-mode t nil (paren)))
+(custom-set-faces
+ ;; custom-set-faces was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ '(x x))
+
+;;to set background color to grey
+(set-background-color "grey")
+
+(pc-selection-mode)
+
+(put 'upcase-region 'disabled nil)
+
+(setq locale-coding-system 'utf-8)
+(set-terminal-coding-system 'utf-8)
+(set-keyboard-coding-system 'utf-8)
+(set-selection-coding-system 'utf-8)
+(prefer-coding-system 'utf-8)
+
+
+(setq x-select-enable-clipboard t)
+(setq interprogram-paste-function 'x-cut-buffer-or-selection-value)
+
+(autoload 'ruby-mode "ruby-mode" "Ruby editing mode." t)
+(setq auto-mode-alist  (cons '("\\.rb$" . ruby-mode) auto-mode-alist))
+(setq auto-mode-alist  (cons '("\\.rhtml$" . html-mode) auto-mode-alist))
+
+(modify-coding-system-alist 'file "\\.haml$" 'utf-8)
+(modify-coding-system-alist 'file "\\.rb$" 'utf-8)
+(modify-coding-system-alist 'file "\\.erb$" 'utf-8)
+(modify-coding-system-alist 'file "\\.rhtml$" 'utf-8)
+(modify-coding-system-alist 'file "\\.rjs$" 'utf-8)
+(modify-coding-system-alist 'file "\\.rxml$" 'utf-8)
+
+(setq-default indent-tabs-mode nil)
+(setq-default tab-width 2)
+
+(setq-default c-basic-offset 2)
+(setq-default css-mode-indent-depth 2)
+(setq-default css-indent-offset 2)
+
+(add-hook 'ruby-mode-hook
+          (lambda()
+            (add-hook 'local-write-file-hooks
+                      '(lambda()
+                         (save-excursion
+                           (untabify (point-min) (point-max))
+                           (delete-trailing-whitespace)
+                           )))
+            (set (make-local-variable 'indent-tabs-mode) 'nil)
+            (set (make-local-variable 'tab-width) 2)
+            (imenu-add-to-menubar "IMENU")
+            (require 'ruby-electric)
+            (ruby-electric-mode t)
+            ))
+
+(global-set-key '[f12] 'yank)
+(global-set-key '[f10] 'copy-region-as-kill-nomark)
+(global-set-key '[f11] 'kill-region)
+(global-set-key '[(meta g)] 'goto-line)
+(global-set-key [f4] 'goto-line)
+
+;;tabs are evil, don't want tabs
+
+;;tab and indentation
+;;the tab key should indent the line and show the possible completions
+
+(defun my-set-indent-and-complete-symbol()
+  (local-set-key [tab] 'slime-indent-and-complete-symbol))
+(add-hook 'html-mode-hook
+          (lambda ()
+            (setq mmm-classes '(erb-code))
+            (mmm-mode-on)))
+(add-to-list 'auto-mode-alist '("\\.rhtml$" . html-mode))
+
+(add-to-list 'auto-mode-alist '("\\.rjs$" . ruby-mode))
+
+(global-set-key [f6] 'mmm-parse-buffer)
+
+(setq interpreter-mode-alist (append '(("ruby" . ruby-mode))
+                                     interpreter-mode-alist))
+
+(defun try-complete-abbrev (old)
+  (if (expand-abbrev) t nil))
+
+(setq hippie-expand-try-functions-list
+      '(try-complete-abbrev
+        try-complete-file-name
+        try-expand-dabbrev))
+
+(put 'dired-find-alternate-file 'disabled nil)
+
+(put 'downcase-region 'disabled nil)
+
+(setq load-path (cons "~/.emacs.d/elisp" load-path))
+(require 'auto-complete)
+(require 'auto-complete-config)
+(global-auto-complete-mode t)
+
+(setq-default ac-sources '(ac-source-words-in-same-mode-buffers))
+(add-hook 'emacs-lisp-mode-hook (lambda () (add-to-list 'ac-sources 'ac-source-symbols)))
+(add-hook 'auto-complete-mode-hook (lambda () (add-to-list 'ac-sources 'ac-source-filename)))
+(global-auto-complete-mode t)
+(set-face-background 'ac-candidate-face "lightgray")
+(set-face-underline 'ac-candidate-face "darkgray")
+(set-face-background 'ac-selection-face "steelblue")
+(define-key ac-completing-map "\M-n" 'ac-next)
+(define-key ac-completing-map "\M-p" 'ac-previous)
+(setq ac-auto-start 2)
+(setq ac-dwim t)
+(define-key ac-mode-map (kbd "M-TAB") 'auto-complete)
+
+;; (apply-args-list-to-fun
+;;  'add-hook
+;;  `(('java-mode-hook   'ac-settings-4-java)
+;;    ('c-mode-hook      'ac-settings-4-c)
+;;    ('c++-mode-hook    'ac-settings-4-cpp)
+;;    ('text-mode-hook   'ac-settings-4-text)
+;;    ('eshell-mode-hook 'ac-settings-4-eshell)
+;;    ('ruby-mode-hook   'ac-settings-4-ruby)
+;;    ('html-mode-hook   'ac-settings-4-html)
+;;    ('java-mode-hook   'ac-settings-4-java)))
+
+(require 'haml-mode)
+(add-to-list 'auto-mode-alist '("\\.haml$" . haml-mode))
+(require 'sass-mode)
+(add-to-list 'auto-mode-alist '("\\.sass$" . sass-mode))
+(require 'yaml-mode)
+(add-to-list 'auto-mode-alist '("\\.yml$" . yaml-mode))
+(require 'php-mode)
+(add-to-list 'auto-mode-alist '("\\.php$" . php-mode))
+
+;; javascript indentation.
+(setq js-indent-level 2)
+
+(setq load-path (cons "~/.emacs.d/rails" load-path))
+;(require 'rails) ; autocomplete does not work on enabling this
+
