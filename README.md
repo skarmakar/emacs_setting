@@ -16,6 +16,6 @@ Mac
 mkdir ~/.emacs.d/
 cp -r emacs_setting/emacs.d/* ~/.emacs.d/
 sudo cp emacs_setting/etc_emacs/* ~/.emacs.d/elisp/
-cp emacs_setting/dot_emacs /Users/skarmakar/.emacs
+cp emacs_setting/dot_emacs /Users/{your username}/.emacs
 ```
 
