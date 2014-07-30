@@ -36,7 +36,17 @@
 
 (autoload 'ruby-mode "ruby-mode" "Ruby editing mode." t)
 (setq auto-mode-alist  (cons '("\\.rb$" . ruby-mode) auto-mode-alist))
+(setq auto-mode-alist  (cons '("\\.rake$" . ruby-mode) auto-mode-alist))
+(setq auto-mode-alist  (cons '(".env" . ruby-mode) auto-mode-alist))
+(setq auto-mode-alist  (cons '("Gemfile" . ruby-mode) auto-mode-alist))
+(setq auto-mode-alist  (cons '("Capfile" . ruby-mode) auto-mode-alist))
+(setq auto-mode-alist  (cons '("Rakefile" . ruby-mode) auto-mode-alist))
+(setq auto-mode-alist  (cons '("Procfile" . ruby-mode) auto-mode-alist))
+(setq auto-mode-alist  (cons '("Guardfile" . ruby-mode) auto-mode-alist)) 
 (setq auto-mode-alist  (cons '("\\.rhtml$" . html-mode) auto-mode-alist))
+(setq auto-mode-alist  (cons '("\\.html.erb$" . html-mode) auto-mode-alist))
+(setq auto-mode-alist  (cons '("\\.js.erb$" . js-mode) auto-mode-alist))
+(setq auto-mode-alist  (cons '("\\.json$" . js-mode) auto-mode-alist))
 
 (modify-coding-system-alist 'file "\\.haml$" 'utf-8)
 (modify-coding-system-alist 'file "\\.rb$" 'utf-8)
@@ -149,3 +159,8 @@
 (setq load-path (cons "~/.emacs.d/rails" load-path))
 ;(require 'rails) ; autocomplete does not work on enabling this
 
+
+;; scss mode
+(autoload 'scss-mode "scss-mode")
+(add-to-list 'auto-mode-alist '("\\.scss\\'" . scss-mode))
+(setq scss-compile-at-save nil)
