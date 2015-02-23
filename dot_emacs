@@ -43,9 +43,8 @@
 (setq auto-mode-alist  (cons '("Rakefile" . ruby-mode) auto-mode-alist))
 (setq auto-mode-alist  (cons '("Procfile" . ruby-mode) auto-mode-alist))
 (setq auto-mode-alist  (cons '("Guardfile" . ruby-mode) auto-mode-alist)) 
-(setq auto-mode-alist  (cons '("\\.rhtml$" . html-mode) auto-mode-alist))
-(setq auto-mode-alist  (cons '("\\.html.erb$" . html-mode) auto-mode-alist))
-(setq auto-mode-alist  (cons '("\\.js.erb$" . js-mode) auto-mode-alist))
+(setq auto-mode-alist  (cons '("\\.erb$" . html-mode) auto-mode-alist))
+(setq auto-mode-alist  (cons '("\\.ejs$" . html-mode) auto-mode-alist))
 (setq auto-mode-alist  (cons '("\\.json$" . js-mode) auto-mode-alist))
 
 (modify-coding-system-alist 'file "\\.haml$" 'utf-8)
@@ -77,7 +76,7 @@
             (ruby-electric-mode t)
             ))
 
-(global-set-key '[f12] 'yank)
+;; (global-set-key '[f12] 'yank)
 (global-set-key '[f10] 'copy-region-as-kill-nomark)
 (global-set-key '[f11] 'kill-region)
 (global-set-key '[(meta g)] 'goto-line)
@@ -153,10 +152,7 @@
 (require 'php-mode)
 (add-to-list 'auto-mode-alist '("\\.php$" . php-mode))
 
-;; javascript indentation.
-(setq js-indent-level 2)
-
-(setq load-path (cons "~/.emacs.d/rails" load-path))
+;; (setq load-path (cons "~/.emacs.d/rails" load-path))
 ;(require 'rails) ; autocomplete does not work on enabling this
 
 ;; scss mode
@@ -164,6 +160,19 @@
 (add-to-list 'auto-mode-alist '("\\.scss\\'" . scss-mode))
 (setq scss-compile-at-save nil)
 
-
 ;; coffee-mode
 (require 'coffee-mode)
+
+;; font
+(set-default-font "-apple-Monaco-medium-normal-normal-*-17-*-*-*-m-0-iso10646-1")
+
+;; js2 mode
+;; javascript indentation.
+(setq js-indent-level 2)
+(add-hook 'js-mode-hook 'auto-complete-mode)
+(define-globalized-minor-mode real-global-auto-complete-mode
+  auto-complete-mode (lambda ()
+                       (if (not (minibufferp (current-buffer)))
+                         (auto-complete-mode 1))
+                       ))
+(real-global-auto-complete-mode t)
